@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>圆形进度条</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<style>
+.progressbar{
+    position: relative;
+    margin: 100px auto;
+    width: 100px;
+    height: 100px;
+    border: 20px solid #ccc;
+    border-radius: 50%;
+}
+.left-container,.right-container{
+    position: absolute;
+    width: 70px;
+    height: 140px;
+    top:-20px;
+    overflow: hidden;
+    z-index: 1;
+}
+.left-container{
+    left: -20px;
+}
+.right-container{
+    right: -20px;
+}
+.left-circle,.right-circle{
+    position: absolute;
+    top:0;
+    width: 100px;
+    height: 100px;
+    border:20px solid transparent;   
+    border-radius: 50%;    
+    transition: all .5s linear;
+    z-index: 2;
+}
+.left-circle{
+    left: 0;
+    border-top: 20px solid blue;
+    border-left: 20px solid blue;
+    transform: rotate(-225deg);
+}
+.right-circle{
+    border-right: 20px solid blue;
+    border-bottom: 20px solid blue;
+    right: 0;
+    transform: rotate(-45deg);
+}
+
+      
+
+	</style>
+</head>
+<body>
+	<div class="progressbar">
+    <div class="left-container">
+        <div class="left-circle" id="left-bar"></div>
+    </div>
+    <div class="right-container">
+        <div class="right-circle" id="right-bar"></div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+/**
+    *设置进度条的变化
+    *@param {number} oldPercent    进度条改变之前的半分比
+    *@param {number} curPercent    进度条当前要设置的值 
+    *@return {boolean} 设置成功返回 true，否则，返回fasle
+    */
+    function setProgessbar(oldPercent, curPercent){
+        var $leftBar = $('#left-bar');
+        var $rightBar = $('#right-bar');
+        //将传入的参数转换，允许字符串表示的数字
+        oldPercent =  + oldPercent;
+        curPercent =  + curPercent;
+        var ocPercent=curPercent/oldPercent;
+            var ldeg=ocPercent*360-180-225;
+            var rdeg=ocPercent*360-225;
+        if(typeof oldPercent ==='number' && typeof curPercent ==='number'){
+            console.log(ldeg);
+            console.log(rdeg);            
+            if(ocPercent>0.5){
+                $leftBar.css({transform: 'rotate('+ ldeg+ 'deg)'})
+                $rightBar.css({transform:'rotate(-45deg)'})
+            }else if(ocPercent<=0.5){
+                $leftBar.css({transform: 'rotate(-225deg)'})
+                $rightBar.css({transform:'rotate('+rdeg+'deg)'})
+            }
+        }else{
+            return false;
+        }
+    }
+    setProgessbar(8000,5000)
+
+</script>
+</body>
+</html>
